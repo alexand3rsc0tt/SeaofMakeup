@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <head>
-  <title>Makeup</title>
+  <title>Sea of Makeup</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-<%= yield %>
-
+  <%= render '/layouts/navbar' %>
 </body>
+<%= yield %>
+<div class="footer">
+  <p class="Copyright">&copy; Sea of Makeup</p>
+</div>
 </html>
