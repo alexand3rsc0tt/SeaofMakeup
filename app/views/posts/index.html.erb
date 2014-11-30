@@ -1,9 +1,9 @@
 <h1> Posts </h1>
-<p><%= link_to "New Post", new_post_path %></p>
+<p><%= link_to "New Post", new_posts_path %></p>
 <% @posts.each do |post| %>
   <h2><%= post.title %></h2>
   <p><%= post.body %></p>
-  <%= link_to "Show post", post_path(post.id) %>
-  <%= link_to "Edit post", edit_post_path(post.id) %>
-  <%= link_to "Delete post", post, method: :delete %>
+  <%= link_to "Show post", posts_path(post.id) %>
+  <%= link_to "Edit post", edit_posts_path(post.id) %>
+  <%= link_to "Delete post", posts, method: :delete %>
 <% end %>
