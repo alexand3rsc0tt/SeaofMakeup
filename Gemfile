@@ -26,14 +26,13 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring',        group: :development
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+group :development, :test do
+  # Better Errors replaces the standard Rails error page with a much better and more useful error page.
+  gem 'better_errors'
+  # RailsPanel is a Chrome extension for Rails development. Have all information about your Rails app requests in the browser - in the Developer Tools panel.
+  gem 'rails_panel'
+  # Supporting gem for Rails Panel (Google Chrome extension for Rails development).
+  gem 'binding_of_caller'
 
-# Use unicorn as the app server
-# gem 'unicorn'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-# Use debugger
-# gem 'debugger', group: [:development, :test]
+end
