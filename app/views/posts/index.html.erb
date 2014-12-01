@@ -4,25 +4,28 @@
 
 <% end %>
 <% @posts.each do |post| %>
+<div class="row">
+  <div class="col-xs-12 col-md-7">
+    <div class="form-container posts">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2><%= post.title %></h2>
+        </div>
+      </div>
+      <div class="panel-body">
+        <p><%= post.body %></p>
+      </div>
+      <div class='panel-footer'>
+        <%= link_to "Show post", post_path(post.id), class: 'btn btn-primary' %>
 
-<div class="form-container posts">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h2><%= post.title %></h2>
+        <% if admin_signed_in? %>
+          <%= link_to "Edit", edit_post_path(post.id), class: 'btn btn-primary' %>
+          <%= link_to "Delete", post, method: :delete, class: 'btn btn-danger' %>
+        <% else %>
+
+        <% end %>
+      </div>
     </div>
-  </div>
-  <div class="panel-body">
-    <p><%= post.body %></p>
-  </div>
-  <div class='panel-footer'>
-    <%= link_to "Show post", post_path(post.id), class: 'btn btn-primary' %>
-
-    <% if admin_signed_in? %>
-      <%= link_to "Edit", edit_post_path(post.id), class: 'btn btn-primary' %>
-      <%= link_to "Delete", post, method: :delete, class: 'btn btn-danger' %>
-    <% else %>
-
-    <% end %>
   </div>
 </div>
 <% end %>
