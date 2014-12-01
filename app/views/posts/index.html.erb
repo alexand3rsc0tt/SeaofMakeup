@@ -1,17 +1,34 @@
-<h1> Posts </h1>
 <% if admin_signed_in? %>
-  <p><%= link_to "New Post", new_post_path %></p>
+  <p><%= link_to "New Post", new_post_path, class: 'btn btn-primary new' %></p>
 <% else %>
 
 <% end %>
 <% @posts.each do |post| %>
-  <h2><%= post.title %></h2>
-  <p><%= post.body %></p>
-  <%= link_to "Show post", post_path(post.id) %>
-  <% if admin_signed_in? %>
-    <%= link_to "Edit post", edit_post_path(post.id) %>
-    <%= link_to "Delete post", post, method: :delete %>
-  <% else %>
 
-  <% end %>
+<div class="form-container posts">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2><%= post.title %></h2>
+    </div>
+  </div>
+  <div class="panel-body">
+    <p><%= post.body %></p>
+  </div>
+  <div class='panel-footer'>
+    <%= link_to "Show post", post_path(post.id), class: 'btn btn-primary' %>
+
+    <% if admin_signed_in? %>
+      <%= link_to "Edit post", edit_post_path(post.id), class: 'btn btn-primary' %>
+      <%= link_to "Delete", post, method: :delete, class: 'btn btn-danger' %>
+    <% else %>
+
+    <% end %>
+  </div>
+</div>
 <% end %>
+<nav>
+  <ul class="pager">
+    <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> Older</a></li>
+    <li class="next"><a href="#">Newer <span aria-hidden="true">&rarr;</span></a></li>
+  </ul>
+</nav>
