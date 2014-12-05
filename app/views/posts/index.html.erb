@@ -16,10 +16,10 @@
         <p><%= post.body %></p>
       </div>
       <div class='panel-footer'>
-        <%= link_to "Show post", post_path(post.id), class: 'btn btn-primary' %>
+        <%= link_to "Show post", post_path(post.id), class: 'btn btn-default' %>
 
         <% if admin_signed_in? %>
-          <%= link_to "Edit", edit_post_path(post.id), class: 'btn btn-primary' %>
+          <%= link_to "Edit", edit_post_path(post.id), class: 'btn btn-info' %>
           <%= link_to "Delete", post, method: :delete, class: 'btn btn-danger' %>
         <% else %>
 
