@@ -1,6 +1,14 @@
 <h1> New Post </h1>
 <%= form_for @post do |f| %>
-<%= f.label :title %>: <%= f.text_field :title %>
-<%= f.label :body %> <%= f.text_field :body %>
-<%= f.submit %>
+  <div class="form-group">
+    <%= f.label :title %>
+    <%= f.text_field :title, class: 'form-control text-title', required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :body %>
+    <%= f.text_area :body, class: 'form-control text-body', required: true %>
+  </div>
+
+  <%= f.submit 'Create', class: 'btn btn-default' %>
 <% end %>
