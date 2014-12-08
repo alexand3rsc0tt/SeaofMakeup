@@ -3,9 +3,9 @@
 <% else %>
 
 <% end %>
-<% @posts.each do |post| %>
 <div class="row">
-  <div class="col-md-7">
+  <div class="col-md-8">
+    <% @posts.each do |post| %>
     <div class="form-container posts">
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -19,16 +19,22 @@
         <%= link_to "Show post", post_path(post.id), class: 'btn btn-default' %>
 
         <% if admin_signed_in? %>
-          <%= link_to "Edit", edit_post_path(post.id), class: 'btn btn-info' %>
-          <%= link_to "Delete", post, method: :delete, class: 'btn btn-danger' %>
+        <%= link_to "Edit", edit_post_path(post.id), class: 'btn btn-info' %>
+        <%= link_to "Delete", post, method: :delete, class: 'btn btn-danger' %>
         <% else %>
 
         <% end %>
       </div>
     </div>
+    <% end %>
+  </div>
+  <div class="col-md-4">
+    <script src="http://snapwidget.com/js/snapwidget.js"></script>
+    <iframe src="http://snapwidget.com/bd/?u=c2Vhb2ZtYWtldXB8aW58MjAwfDJ8NXx8eWVzfDV8bm9uZXxvblN0YXJ0fHllc3x5ZXM=&ve=081214" title="Instagram Widget" class="snapwidget-widget" allowTransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:100%;"></iframe>
   </div>
 </div>
-<% end %>
-<div class="paginate">
-  <%= will_paginate @collection, renderer: BootstrapPagination::Rails %>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3 text-center">
+    <%= will_paginate @collection, renderer: BootstrapPagination::Rails %>
+  </div>
 </div>
