@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-  mount Ckeditor::Engine => '/ckeditor'
   devise_for :admins
   root "posts#index"
   get "/contact", to: "static#contact", as: :contact

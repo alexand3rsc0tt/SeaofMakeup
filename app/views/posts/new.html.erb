@@ -1,4 +1,3 @@
-<h1> New Post </h1>
 <%= form_for @post do |f| %>
   <div class="form-group">
     <%= f.label :title %>
@@ -7,7 +6,7 @@
 
   <div class="form-group">
     <%= f.label :body %>
-    <%= f.text_area :body, class: 'ckeditor', required: true %>
+    <%= f.text_area :body %>
   </div>
 
   <%= f.submit 'Create', class: 'btn btn-default' %>
