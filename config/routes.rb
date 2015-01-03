@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   mount Ckeditor::Engine => '/ckeditor'
   devise_for :admins
-  root "static#about"
+  root "posts#index"
   get "/contact", to: "static#contact", as: :contact
   get "/faq", to: "static#faq", as: :faq
   resources :posts
