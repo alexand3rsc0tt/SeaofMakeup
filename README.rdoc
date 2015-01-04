@@ -1,1 +1,8 @@
 This is the repository for Sea of Makeup
+Gems used
+  bootstrap-sass
+  font-awesome-rails
+  devise
+  will_paginate-bootstrap
+  ckeditor
+  paperclip
