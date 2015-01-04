@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="panel-body">
-        <p><%= post.body %></p>
+        <p><%= raw(post.body) %></p>
       </div>
       <div class='panel-footer'>
         <%= link_to "Show post", post_path(post.id), class: 'btn btn-default' %>
