@@ -1,5 +1,5 @@
 # encoding: utf-8
-class CkeditorAttachmentFileUploader < CarrierWave::Uploader::Base
+class CkeditorAttachmentFileUploader < Paperclip::Uploader::Base
   include Ckeditor::Backend::Paperclip
 
   # Include RMagick or ImageScience support:
