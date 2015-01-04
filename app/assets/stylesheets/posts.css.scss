@@ -21,13 +21,26 @@
 }
 
 .Karen {
-  max-width: 150px;
+  max-width: 250px;
   max-height: 250px;
   padding-bottom: 10px;
 }
 
+.Karen-2 {
+  max-width: 250px;
+  max-height: 250px;
+  padding-bottom: 10px;
+  padding-left:90px;
+}
+
 .about-p {
-  font-size: 1.25em;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.5em;
+  margin-left:90px;
+}
+
+.links {
+  margin-left:90px;
 }
 
 .about-h1 {
@@ -44,4 +57,8 @@
 
 .Post-space {
   padding-left: 30px;
+}
+
+.givemespace {
+  padding-top: 15px;
 }
