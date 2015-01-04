@@ -20,10 +20,9 @@
  @import url(http://fonts.googleapis.com/css?family=Dancing+Script);
 
 //Navbar
-.navbar-default .navbar-brand {
-  font-size: 2.5em;
-  padding: 15px 5px;
-  font-family: 'Dancing Script', cursive;
+.seaofmakeup {
+  margin-top:-70px;
+  margin-left:25%;
 }
 
 .navbar-default .navbar-nav > li > a {
@@ -39,10 +38,6 @@
 }
 
 body {
-  background-image: image-url('cream_pixels_@2X.png');
-  background-attachment:fixed;
-  background-repeat: repeat;
-  background-position:center;
   padding-top: 70px;
 }
 
