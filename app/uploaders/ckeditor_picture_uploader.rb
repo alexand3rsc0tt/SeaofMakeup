@@ -1,10 +1,10 @@
 # encoding: utf-8
 class CkeditorPictureUploader < CarrierWave::Uploader::Base
-  include Ckeditor::Backend::CarrierWave
+  include Ckeditor::Backend::Paperclip
 
   # Include RMagick or ImageScience support:
   # include CarrierWave::RMagick
-  include CarrierWave::MiniMagick
+  # include CarrierWave::MiniMagick
   # include CarrierWave::ImageScience
 
   # Choose what kind of storage to use for this uploader:
