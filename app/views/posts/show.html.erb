@@ -5,7 +5,9 @@
         <div class="Post-space">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h2><%= @post.title %></h2>
+              <div class="post-title">
+                <h2><%= @post.title %></h2>
+              </div>
             </div>
             <div class="panel-body">
               <p><%= raw(@post.body) %></p>
