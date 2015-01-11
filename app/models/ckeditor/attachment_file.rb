@@ -3,8 +3,7 @@ class Ckeditor::AttachmentFile < Ckeditor::Asset
                     :url => "/ckeditor_assets/attachments/:id/:filename",
                     :path => ":rails_root/public/ckeditor_assets/attachments/:id/:filename"
                     :storage => :dropbox,
-                    :dropbox_credentials => Rails.root.join("config/dropbox.yml"),
-                    :dropbox_options => {...}
+                    :dropbox_credentials => Rails.root.join("config/dropbox.yml")
 
   validates_attachment_presence :data
   validates_attachment_size :data, :less_than => 100.gigabytes
