@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="panel-body">
-        <p><%= raw(post.body) %></p>
+        <p><%= raw(post.body.split[0..199].join(" ")) %></p>
       </div>
       <div class='panel-footer'>
         <%= link_to "Show post", post_path(post.id), class: 'btn btn-default' %>
