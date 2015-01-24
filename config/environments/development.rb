@@ -33,6 +33,15 @@ Rails.application.configure do
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
 
+
+  config.paperclip_defaults = {
+    :storage => :s3,
+    :s3_credentials => {
+      :bucket => ENV['thesea'],
+      :access_key_id => ENV['AKIAIPJZD3CRMZ5CS6TA'],
+      :secret_access_key => ENV['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']
+    }
+  }
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 end
