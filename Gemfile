@@ -34,6 +34,7 @@ gem 'will_paginate-bootstrap'
 gem 'ckeditor', github: 'galetahub/ckeditor'
 gem 'paperclip', :git => 'git://github.com/thoughtbot/paperclip.git'
 gem 'aws-sdk'
+gem 's3_direct_upload' # direct upload form helper and assets
 
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring',        group: :development

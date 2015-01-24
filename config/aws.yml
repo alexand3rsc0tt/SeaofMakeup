@@ -1,0 +1,13 @@
+defaults: &defaults
+  access_key_id: "AKIAIPJZD3CRMZ5CS6TA"
+  secret_access_key: "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"
+development:
+  <<: *defaults
+  bucket: "thesea"
+test:
+  <<: *defaults
+  bucket: "myappthesea"
+production:
+  access_key_id: <%=ENV["AKIAIPJZD3CRMZ5CS6TA"]%>
+  secret_access_key: <%=ENV["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"]%>
+  bucket: "thesea"
