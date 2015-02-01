@@ -14,6 +14,5 @@
 //= require jquery_ujs
 //= require ckeditor/init
 //= require turbolinks
-//= require s3_direct_upload
 //= require bootstrap-sprockets
 //= require_tree .
