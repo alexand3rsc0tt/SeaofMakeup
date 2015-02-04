@@ -3,7 +3,7 @@
     <%= f.text_field :title, class: 'form-control text-title', required: true %>
   </div>
   <div data-no-turbolink>
-    <%= f.cktext_area :body, :ckeditor => {:uiColor => '#3333FF'} %>
+    <%= f.cktext_area :body, :ckeditor => {:uiColor => '#3333FF', :toolbar => 'spellchecker'} %>
   </div>
 
   <%= f.submit 'Update', class: 'btn btn-default' %>
