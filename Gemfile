@@ -46,5 +46,11 @@ group :development, :test do
   # Supporting gem for Rails Panel (Google Chrome extension for Rails development).
   gem 'binding_of_caller'
 
+  group :development do
+    gem 'capistrano-rails'
+    gem 'capistrano-bundler'
+    gem 'capistrano-rvm'
+    gem 'capistrano-rbenv', '~> 2.0', require: false
+  end
 
 end
