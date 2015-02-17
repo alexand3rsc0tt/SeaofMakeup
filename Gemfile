@@ -33,7 +33,6 @@ gem 'will_paginate-bootstrap'
 
 gem 'ckeditor', github: 'galetahub/ckeditor'
 gem 'paperclip', :git => 'git://github.com/thoughtbot/paperclip.git'
-gem "paperclip-dropbox"
 
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring',        group: :development
@@ -45,17 +44,6 @@ group :development, :test do
   gem 'rails_panel'
   # Supporting gem for Rails Panel (Google Chrome extension for Rails development).
   gem 'binding_of_caller'
-
-  gem 'capistrano'
-
-  # rails specific capistrano funcitons
-  gem 'capistrano-rails'
-
-  # integrate bundler with capistrano
-  gem 'capistrano-bundler'
-
-  # if you are using RBENV
-  gem 'capistrano-rbenv'
 
   # Use Unicorn as our app server
   gem 'unicorn'
