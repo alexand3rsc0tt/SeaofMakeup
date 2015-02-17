@@ -1,10 +1,35 @@
-# Load DSL and set up stages
+# # Load DSL and Setup Up Stages
+# require 'capistrano/setup'
+#
+# # Includes default deployment tasks
+# require 'capistrano/deploy'
+#
+# task :use_rvm do
+#   require 'capistrano/rvm'
+# end
+#
+# task :require_rvm do
+#   require 'capistrano/rvm'
+# end
+# task 'staging' => [:require_rvm]
+#
+# require 'capistrano/bundler'
+#
+# task 'staging' => [:use_rvm]
+#
+# require 'capistrano/bundler'
+# require 'capistrano/rails/assets'
+# require 'capistrano/rails/migrations'
+#
+# # Loads custom tasks from `lib/capistrano/tasks' if you have any defined.
+# Dir.glob('lib/capistrano/tasks/*.rake').each { |r| import r }
+# Load DSL and Setup Up Stages
 require 'capistrano/setup'
 
-# Include default deployment tasks
+# Includes default deployment tasks
 require 'capistrano/deploy'
-require 'capistrano/rails'
-# Include tasks from other gems included in your Gemfile
+
+# Includes tasks from other gems included in your Gemfile
 #
 # For documentation on these, see for example:
 #
@@ -12,16 +37,17 @@ require 'capistrano/rails'
 #   https://github.com/capistrano/rbenv
 #   https://github.com/capistrano/chruby
 #   https://github.com/capistrano/bundler
-#   https://github.com/capistrano/rails
-#   https://github.com/capistrano/passenger
+#   https://github.com/capistrano/rails/tree/master/assets
+#   https://github.com/capistrano/rails/tree/master/migrations
 #
 # require 'capistrano/rvm'
 # require 'capistrano/rbenv'
 # require 'capistrano/chruby'
 require 'capistrano/bundler'
-require 'capistrano/rails/assets'
+# require "sidekiq/capistrano"
+# require 'capistrano/rails/assets'
 require 'capistrano/rails/migrations'
- # require 'capistrano/passenger'
 
-# Load custom tasks from `lib/capistrano/tasks' if you have any defined
-Dir.glob('lib/capistrano/tasks/*.rake').each { |r| import r }
+# Loads custom tasks from `lib/capistrano/tasks' if you have any defined.
+Dir.glob('lib/capistrano/tasks/*.cap').each { |r| import r }
+Dir.glob('lib/capistrano/**/*.rb').each { |r| import r }

@@ -1,19 +1,19 @@
 # config valid only for current version of Capistrano
-require 'capistrano/bundler'
 lock '3.3.5'
 
 set :application, 'seaofmakeup'
-set :repo_url, 'https://github.com/alexand3rsc0tt/SeaofMakeup.git'
+set :repo_url, 'https://github.com/alexand3rsc0tt/SeaofMakeup'
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
 # Default deploy_to directory is /var/www/my_app_name
-set :deploy_to, '/home/sp3ckt4tor/webapps/seaofmakeup'
-
-# Default value for :scm is :git
-# set :scm, :git
 set :tmp_dir, '/home/sp3ckt4tor/tmp'
+set :deploy_to, '/home/sp3ckt4tor/webapps/seaofmakeup'
+set :rvm_ruby_string, 'ruby-2.2.0'
+# Default value for :scm is :git
+ set :scm, :git
+
 # Default value for :format is :pretty
 # set :format, :pretty
 
@@ -23,8 +23,6 @@ set :tmp_dir, '/home/sp3ckt4tor/tmp'
 # Default value for :pty is false
 # set :pty, true
 
-# Your restart mechanism here
-# capture("#{deploy_to}/bin/restart")
 # Default value for :linked_files is []
 # set :linked_files, fetch(:linked_files, []).push('config/database.yml')
 
@@ -36,23 +34,3 @@ set :tmp_dir, '/home/sp3ckt4tor/tmp'
 
 # Default value for keep_releases is 5
 # set :keep_releases, 5
-
-namespace :deploy do
-
-  after :restart, :clear_cache do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
-      # Here we can do anything such as:
-      # within release_path do
-      #   execute :rake, 'cache:clear'
-      # end
-    end
-
-    desc "run bundle install and ensure all gem requirements are met"
-    task :install do
-      run "cd #{current_path} && bundle install  --without=test --no-update-sources"
-    end
-
-  end
-  before "deploy:restart", "bundle:install"
-
-end

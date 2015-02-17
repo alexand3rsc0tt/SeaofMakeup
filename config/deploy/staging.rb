@@ -16,7 +16,7 @@ role :db,  %w{sp3ckt4tor@web386.webfaction.com}
 # used to set extended properties on the server.
 
 # server 'example.com', user: 'deploy', roles: %w{web app}, my_property: :my_value
-
+set :bundle_bins, %w(gem rake rails)
 
 # Custom SSH Options
 # ==================
