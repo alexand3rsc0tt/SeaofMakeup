@@ -9,7 +9,7 @@ set :repo_url, 'https://github.com/alexand3rsc0tt/SeaofMakeup'
 
 # Default deploy_to directory is /var/www/my_app_name
 set :tmp_dir, '/home/sp3ckt4tor/tmp'
-set :deploy_to, '/home/sp3ckt4tor/webapps/seaofmakeup'
+set :deploy_to, '/home/sp3ckt4tor/webapps/seaofmakeup/'
 set :rvm_ruby_string, 'ruby-2.2.0'
 # Default value for :scm is :git
  set :scm, :git

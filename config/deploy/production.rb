@@ -13,7 +13,7 @@ set :full_app_name, "#{fetch(:application)}_#{fetch(:stage)}"
 
 server 'web386.webfaction.com', user: 'sp3ckt4tor', roles: %w{web app db}, primary: true
 
-set :deploy_to, "$HOME/webapps/seaofmakeup"
+set :deploy_to, "$HOME/webapps/seaofmakeup/seaofmakeup"
 
 # dont try and infer something as important as environment from
 # stage name.
