@@ -16,7 +16,7 @@ test:
 
 production:
  adapter: postgresql
- database: seaofmakeup
+ database: db_development
  host: localhost
- username: lawyerk
- password: alexrocky
+ username: sp3ckt4tor
+ password: rainmms1
