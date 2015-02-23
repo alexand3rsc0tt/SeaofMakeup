@@ -3,36 +3,40 @@
 <% else %>
 
 <% end %>
-<div class="row">
-  <div class="col-md-8">
-    <% @posts.each do |post| %>
-    <div class="form-container posts">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <div class="post-title">
-            <h2><%= post.title %></h2>
+<div class="post-padding">
+  <div class="row">
+    <div class="col-md-8">
+      <% @posts.each do |post| %>
+      <div class="form-container posts">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="post-title">
+              <h2><%= post.title %></h2>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="panel-body">
-        <p><%= raw(post.body.split[0..199].join(" ")) %></p>
-      </div>
-      <div class='panel-footer'>
-        <%= link_to "Show post", post_path(post.id), class: 'btn btn-default' %>
+        <div class="panel-body">
+          <p><%= raw(post.body.split[0..199].join(" ")) %></p>
+        </div>
+        <div class='panel-footer'>
+          <%= link_to "Show post", post_path(post.id), class: 'btn btn-default' %>
 
-        <% if admin_signed_in? %>
-        <%= link_to "Edit", edit_post_path(post.id), class: 'btn btn-info' %>
-        <%= link_to "Delete", post, method: :delete, class: 'btn btn-danger' %>
-        <% else %>
+          <% if admin_signed_in? %>
+          <%= link_to "Edit", edit_post_path(post.id), class: 'btn btn-info' %>
+          <%= link_to "Delete", post, method: :delete, class: 'btn btn-danger' %>
+          <% else %>
 
-        <% end %>
+          <% end %>
+        </div>
+      </div>
+      <% end %>
+    </div>
+    <div class="padding-instagram">
+      <div class="col-md-3 pull-right">
+        <script src="http://snapwidget.com/js/snapwidget.js"></script>
+        <iframe src="http://snapwidget.com/bd/?u=c2Vhb2ZtYWtldXB8aW58MjAwfDJ8NXx8eWVzfDV8bm9uZXxvblN0YXJ0fHllc3x5ZXM=&ve=081214" title="Instagram Widget" class="snapwidget-widget" allowTransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:100%;"></iframe>
       </div>
     </div>
-    <% end %>
-  </div>
-  <div class="col-md-3">
-    <script src="http://snapwidget.com/js/snapwidget.js"></script>
-    <iframe src="http://snapwidget.com/bd/?u=c2Vhb2ZtYWtldXB8aW58MjAwfDJ8NXx8eWVzfDV8bm9uZXxvblN0YXJ0fHllc3x5ZXM=&ve=081214" title="Instagram Widget" class="snapwidget-widget" allowTransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:100%;"></iframe>
   </div>
 </div>
 <div class="row">
