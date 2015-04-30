@@ -34,18 +34,18 @@
 .Karen-2 {
   max-width: 250px;
   max-height: 250px;
-  padding-bottom: 10px;
-  padding-left:90px;
+  // padding-bottom: 10px;
+  // padding-left:90px;
 }
 
 .about-p {
   font-family: 'Dancing Script', cursive;
   font-size: 1.5em;
-  margin-left:90px;
+  // margin-left:90px;
 }
 
 .links {
-  margin-left:90px;
+  // margin-left:90px;
 }
 
 .about-h1 {
@@ -61,9 +61,9 @@
   height: 50px;
 }
 
-.Post-space {
-  padding-left: 30px;
-}
+// .Post-space {
+//   padding-left: 30px;
+// }
 
 .givemespace {
   padding-top: 15px;
@@ -80,4 +80,14 @@ img {
 
 .padding-instagram {
   padding-right:50px;
+}
+
+.shareit {
+  padding-left: 10px;
+  position: fixed;
+  padding-top: 200px;
+}
+
+.fb-like {
+  padding-bottom: 10px;
 }
