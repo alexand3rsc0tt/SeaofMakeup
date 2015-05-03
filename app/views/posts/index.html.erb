@@ -5,7 +5,23 @@
 <% end %>
 <div class="post-padding">
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-sm-1 col-md-1">
+    <div class="shareit">
+      <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
+          fjs.parentNode.insertBefore(js, fjs);
+          }(document, 'script', 'facebook-jssdk'));</script>
+          <a href="https://www.pinterest.com/pin/create/button/?url=http://seaofmakeup.com/assets/Seaofmakeup.png" data-pin-do="buttonPin" data-pin-config="above">
+            <img src="//assets.pinterest.com/images/pidgets/pin_it_button.png" />
+          </a><br/>
+          <div class="fb-like" data-href="http://seaofmakeup.com" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+        </div>
+      </div>
+    <div class="col-xs-12 col-sm-7 col-md-8">
       <% @posts.each do |post| %>
       <div class="form-container posts">
         <div class="panel panel-default">
@@ -32,7 +48,7 @@
       <% end %>
     </div>
     <div class="padding-instagram">
-      <div class="col-md-3 pull-right">
+      <div class="col-sm-2 col-md-3 pull-right">
         <script src="http://snapwidget.com/js/snapwidget.js"></script>
         <iframe src="http://snapwidget.com/bd/?u=c2Vhb2ZtYWtldXB8aW58MjAwfDJ8NXx8eWVzfDV8bm9uZXxvblN0YXJ0fHllc3x5ZXM=&ve=081214" title="Instagram Widget" class="snapwidget-widget" allowTransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:100%;"></iframe>
       </div>
