@@ -10,3 +10,14 @@
 .products {
   font-family: 'Dancing Script', cursive;
 }
+
+@media screen and (max-width: 600px) {
+  .faq-instagram {
+    visibility: hidden;
+    clear: both;
+    float: left;
+    margin: 10px auto 5px 20px;
+    width: 28%;
+    display: none;
+  }
+}
