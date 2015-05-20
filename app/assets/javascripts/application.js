@@ -15,4 +15,5 @@
 //= require ckeditor/init
 //= require turbolinks
 //= require bootstrap-sprockets
+//= require_tree ./ckeditor
 //= require_tree .
