@@ -1,267 +1,117 @@
-/**
- * @license Copyright (c) CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.html or http://ckeditor.com/license
- */
+/*
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.html or http://ckeditor.com/license
+*/
 
-(function() {
-    if (!supportsLocalStorage()) {
-        CKEDITOR.plugins.add("autosave", {}); //register a dummy plugin to pass CKEditor plugin initialization process
-        return;
+CKEDITOR.editorConfig = function( config )
+{
+  // Define changes to default configuration here. For example:
+  // config.language = 'fr';
+  // config.uiColor = '#AADC6E';
+
+  /* Filebrowser routes */
+  // The location of an external file browser, that should be launched when "Browse Server" button is pressed.
+  config.filebrowserBrowseUrl = "/ckeditor/attachment_files";
+
+  // The location of an external file browser, that should be launched when "Browse Server" button is pressed in the Flash dialog.
+  config.filebrowserFlashBrowseUrl = "/ckeditor/attachment_files";
+
+  // The location of a script that handles file uploads in the Flash dialog.
+  config.filebrowserFlashUploadUrl = "/ckeditor/attachment_files";
+
+  // The location of an external file browser, that should be launched when "Browse Server" button is pressed in the Link tab of Image dialog.
+  config.filebrowserImageBrowseLinkUrl = "/ckeditor/pictures";
+
+  // The location of an external file browser, that should be launched when "Browse Server" button is pressed in the Image dialog.
+  config.filebrowserImageBrowseUrl = "/ckeditor/pictures";
+
+  // The location of a script that handles file uploads in the Image dialog.
+  config.filebrowserImageUploadUrl = "/ckeditor/pictures";
+
+  // The location of a script that handles file uploads.
+  config.filebrowserUploadUrl = "/ckeditor/attachment_files";
+
+  config.allowedContent = true;
+
+  // Rails CSRF token
+  config.filebrowserParams = function(){
+    var csrf_token, csrf_param, meta,
+        metas = document.getElementsByTagName('meta'),
+        params = new Object();
+
+    for ( var i = 0 ; i < metas.length ; i++ ){
+      meta = metas[i];
+
+      switch(meta.name) {
+        case "csrf-token":
+          csrf_token = meta.content;
+          break;
+        case "csrf-param":
+          csrf_param = meta.content;
+          break;
+        default:
+          continue;
+      }
     }
 
-    CKEDITOR.plugins.add("autosave", {
-        lang: 'ca,de,en,es,fr,ja,pl,pt-br,sv,zh,zh-cn', // %REMOVE_LINE_CORE%
-        version: 0.11,
-        init: function(editor) {
-            CKEDITOR.document.appendStyleSheet(CKEDITOR.getUrl(CKEDITOR.plugins.getPath('autosave') + 'css/autosave.min.css'));
-
-            editor.on('uiSpace', function (event) {
-                if (event.data.space == 'bottom') {
-
-                    event.data.html += '<div class="autoSaveMessage" unselectable="on"><div unselectable="on" id="'
-                        + autoSaveMessageId(event.editor)
-                        + '"class="hidden">'
-                        + event.editor.lang.autosave.autoSaveMessage
-                        + '</div></div>';
-                }
-            }, editor, null, 100);
-
-            editor.on('instanceReady', function(){
-                if (typeof (jQuery) === 'undefined') {
-                    CKEDITOR.scriptLoader.load('//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js', function() {
-                        jQuery.noConflict();
-
-                        loadPlugin(editor);
-                    });
-
-                } else {
-                    CKEDITOR.scriptLoader.load(CKEDITOR.getUrl(CKEDITOR.plugins.getPath('autosave') + 'js/extensions.min.js'), function() {
-                        loadPlugin(editor);
-                    });
-                }
-            }, editor, null, 100);
-        }
-    });
-
-    function loadPlugin(editorInstance) {
-        var autoSaveKey = editorInstance.config.autosave_SaveKey != null ? editorInstance.config.autosave_SaveKey : 'autosave_' + window.location + "_" + editorInstance.id;
-        var notOlderThan = editorInstance.config.autosave_NotOlderThan != null ? editorInstance.config.autosave_NotOlderThan : 1440;
-        var saveOnDestroy = editorInstance.config.autosave_saveOnDestroy != null ? editorInstance.config.autosave_saveOnDestroy : false;
-        var saveDetectionSelectors =
-            editorInstance.config.autosave_saveDetectionSelectors != null ? editorInstance.config.autosave_saveDetectionSelectors : "a[href^='javascript:__doPostBack'][id*='Save'],a[id*='Cancel']";
-
-
-        CKEDITOR.scriptLoader.load(CKEDITOR.getUrl(CKEDITOR.plugins.getPath('autosave') + 'js/extensions.min.js'), function() {
-            GenerateAutoSaveDialog(editorInstance, autoSaveKey);
-
-            CheckForAutoSavedContent(editorInstance, autoSaveKey, notOlderThan);
-        });
-
-        jQuery(saveDetectionSelectors).click(function() {
-            RemoveStorage(autoSaveKey);
-        });
-
-        editorInstance.on('change', startTimer);
-
-        editorInstance.on('destroy', function() {
-            if (saveOnDestroy) {
-                SaveData(autoSaveKey, editorInstance);
-            }
-        });
+    if (csrf_param !== undefined && csrf_token !== undefined) {
+      params[csrf_param] = csrf_token;
     }
 
-    function autoSaveMessageId(editorInstance) {
-        return 'cke_autoSaveMessage_' + editorInstance.name;
+    return params;
+  };
+
+  config.addQueryString = function( url, params ){
+    var queryString = [];
+
+    if ( !params ) {
+      return url;
+    } else {
+      for ( var i in params )
+        queryString.push( i + "=" + encodeURIComponent( params[ i ] ) );
     }
 
-    var timeOutId = 0,
-        savingActive = false;
+    return url + ( ( url.indexOf( "?" ) != -1 ) ? "&" : "?" ) + queryString.join( "&" );
+  };
 
-    var startTimer = function(event) {
-        if (timeOutId) {
-            clearTimeout(timeOutId);
-        }
-        var delay = CKEDITOR.config.autosave_delay != null ? CKEDITOR.config.autosave_delay : 10;
-        timeOutId = setTimeout(onTimer, delay * 1000, event);
-    };
-    var onTimer = function(event) {
-        if (savingActive) {
-            startTimer(event);
-        } else if (event.editor.checkDirty() || event.editor.plugins.bbcode) {
-            savingActive = true;
-            var editor = event.editor,
-                autoSaveKey = editor.config.autosave_SaveKey != null ? editor.config.autosave_SaveKey : 'autosave_' + window.location + "_" + editor.id;
+  // Integrate Rails CSRF token into file upload dialogs (link, image, attachment and flash)
+  CKEDITOR.on( 'dialogDefinition', function( ev ){
+    // Take the dialog name and its definition from the event data.
+    var dialogName = ev.data.name;
+    var dialogDefinition = ev.data.definition;
+    var content, upload;
 
-            SaveData(autoSaveKey, editor);
+    if (CKEDITOR.tools.indexOf(['link', 'image', 'attachment', 'flash'], dialogName) > -1) {
+      content = (dialogDefinition.getContents('Upload') || dialogDefinition.getContents('upload'));
+      upload = (content == null ? null : content.get('upload'));
 
-            savingActive = false;
-        }
-    };
-
-    // localStorage detection
-    function supportsLocalStorage() {
-        if (typeof (Storage) === 'undefined') {
-            return false;
-        }
-
-        try {
-            localStorage.getItem("___test_key");
-            return true;
-        } catch (e) {
-            return false;
-        }
+      if (upload && upload.filebrowser && upload.filebrowser['params'] === undefined) {
+        upload.filebrowser['params'] = config.filebrowserParams();
+        upload.action = config.addQueryString(upload.action, upload.filebrowser['params']);
+      }
     }
+  });
 
-    function GenerateAutoSaveDialog(editorInstance, autoSaveKey) {
-        CKEDITOR.dialog.add('autosaveDialog', function() {
-            return {
-                title: editorInstance.lang.autosave.title,
-                minHeight: 155,
-                height: 300,
-                width: 750,
-                onShow: function() {
-                    RenderDiff(this, editorInstance, autoSaveKey);
-                },
-                onOk: function() {
-                    var jsonSavedContent = LoadData(autoSaveKey);
+  // Toolbar groups configuration.
+  config.toolbar = [
+    { name: 'document', groups: [ 'mode', 'document', 'doctools' ], items: [ 'Source'] },
+    { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+    // { name: 'editing', groups: [ 'find', 'selection', 'spellchecker' ], items: [ 'Find', 'Replace', '-', 'SelectAll', '-', 'Scayt' ] },
+    // { name: 'forms', items: [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ] },
+    { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+    { name: 'insert', items: [ 'Image', 'Flash', 'Table', 'HorizontalRule', 'SpecialChar' ] },
+    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
+    '/',
+    { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+    { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] }
+  ];
 
-                    editorInstance.loadSnapshot(jsonSavedContent.data);
-
-                    RemoveStorage(autoSaveKey);
-                },
-                onCancel: function() {
-                    RemoveStorage(autoSaveKey);
-                },
-                contents: [
-                    {
-                        label: '',
-                        id: 'general',
-                        elements: [
-                            {
-                                type: 'radio',
-                                id: 'diffType',
-                                label: editorInstance.lang.autosave.diffType,
-                                items: [[editorInstance.lang.autosave.sideBySide, 'sideBySide'], [editorInstance.lang.autosave.inline, 'inline']],
-                                'default': 'sideBySide',
-                                onClick: function() {
-                                    RenderDiff(this._.dialog, editorInstance, autoSaveKey);
-                                }
-                            }, {
-                                type: 'html',
-                                id: 'diffContent',
-                                html: ''
-                            }
-                        ]
-                    }
-                ],
-                buttons: [
-                    {
-                        id: 'ok',
-                        type: 'button',
-                        label: editorInstance.lang.autosave.ok,
-                        'class': 'cke_dialog_ui_button_ok cke_dialog_autosave_ok',
-                        onClick: function(evt) {
-                            var dialog = evt.data.dialog;
-                            if (dialog.fire('ok', { hide: true }).hide !== false)
-                                dialog.hide();
-                        }
-                    },
-                    {
-                        id: 'cancel',
-                        type: 'button',
-                        label: editorInstance.lang.autosave.no,
-                        'class': 'cke_dialog_ui_button_cancel',
-                        onClick: function(evt) {
-                            var dialog = evt.data.dialog;
-                            if (dialog.fire('cancel', { hide: true }).hide !== false)
-                                dialog.hide();
-                        }
-                    }
-                ]
-            };
-        });
-    }
-
-    function CheckForAutoSavedContent(editorInstance, autoSaveKey, notOlderThan) {
-        // Checks If there is data available and load it
-        if (localStorage.getItem(autoSaveKey)) {
-            var jsonSavedContent = LoadData(autoSaveKey);
-
-            var autoSavedContent = jsonSavedContent.data;
-            var autoSavedContentDate = jsonSavedContent.saveTime;
-
-            var editorLoadedContent = editorInstance.getSnapshot();
-
-            // check if the loaded editor content is the same as the autosaved content
-            if (editorLoadedContent == autoSavedContent) {
-                localStorage.removeItem(autoSaveKey);
-                return;
-            }
-
-            // Ignore if autosaved content is older then x minutes
-            if (moment(new Date()).diff(autoSavedContentDate, 'minutes') > notOlderThan) {
-                RemoveStorage(autoSaveKey);
-
-                return;
-            }
-
-            var confirmMessage = editorInstance.lang.autosave.loadSavedContent.replace("{0}", moment(autoSavedContentDate).lang(editorInstance.config.language).format(editorInstance.lang.autosave.dateFormat));
-            if (confirm(confirmMessage)) {
-                // Open DIFF Dialog
-                editorInstance.openDialog('autosaveDialog');
-            } else {
-                RemoveStorage(autoSaveKey);
-            }
-        }
-    }
-
-    function LoadData(autoSaveKey) {
-        var compressedJSON = LZString.decompressFromUTF16(localStorage.getItem(autoSaveKey));
-        return JSON.parse(compressedJSON);
-    }
-
-    function SaveData(autoSaveKey, editorInstance) {
-        var compressedJSON = LZString.compressToUTF16(JSON.stringify({ data: editorInstance.getSnapshot(), saveTime: new Date() }));
-        localStorage.setItem(autoSaveKey, compressedJSON);
-
-        var autoSaveMessage = document.getElementById(autoSaveMessageId(editorInstance));
-
-        if (autoSaveMessage) {
-            autoSaveMessage.className = "show";
-
-            setTimeout(function() {
-                autoSaveMessage.className = "hidden";
-            }, 2000);
-        }
-    }
-
-    function RemoveStorage(autoSaveKey) {
-        if (timeOutId) {
-            clearTimeout(timeOutId);
-        }
-
-        localStorage.removeItem(autoSaveKey);
-    }
-
-    function RenderDiff(dialog, editorInstance, autoSaveKey) {
-        var jsonSavedContent = LoadData(autoSaveKey);
-
-        var base = difflib.stringAsLines(editorInstance.getSnapshot());
-        var newtxt = difflib.stringAsLines(jsonSavedContent.data);
-        var sm = new difflib.SequenceMatcher(base, newtxt);
-        var opcodes = sm.get_opcodes();
-
-        dialog.getContentElement('general', 'diffContent').getElement().setHtml('<div class="diffContent">' + diffview.buildView({
-            baseTextLines: base,
-            newTextLines: newtxt,
-            opcodes: opcodes,
-            baseTextName: editorInstance.lang.autosave.loadedContent,
-            newTextName: editorInstance.lang.autosave.autoSavedContent + (moment(jsonSavedContent.saveTime).lang(editorInstance.config.language).format(editorInstance.lang.autosave.dateFormat)) + '\'',
-            contextSize: 3,
-            viewType: dialog.getContentElement('general', 'diffType').getValue() == "inline" ? 1 : 0
-        }).outerHTML + '</div>');
-    }
-})();
-
-config.extraPlugins = 'autosave';
-config.autosave_SaveKey = 'autosaveKey';
+  config.toolbar_mini = [
+    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
+    { name: 'styles', items: [ 'Font', 'FontSize' ] },
+    { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
+    { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'SpecialChar' ] }
+  ];
+};
